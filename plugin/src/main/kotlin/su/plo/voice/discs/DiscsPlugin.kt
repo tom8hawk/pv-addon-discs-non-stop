@@ -30,6 +30,7 @@ import su.plo.voice.discs.packet.CancelJukeboxPlayEvent
 import su.plo.voice.discs.utils.KOIN_INSTANCE
 import su.plo.voice.discs.utils.extend.debug
 import su.plo.voice.discs.utils.extend.getMinecraftVersionInt
+import su.plo.voice.discs.utils.extend.registerBukkit
 import su.plo.voice.discs.v1_19_4.GoatHornListener
 
 @Addon(
@@ -131,8 +132,7 @@ class DiscsPlugin : JavaPlugin() {
         command.tabCompleter = handler
 
         val permissions = voiceServer.minecraftServer.permissionManager
-
-        permissions.register("pv.addon.discs.play", PermissionDefault.TRUE)
+        permissions.registerBukkit("pv.addon.discs.play", PermissionDefault.TRUE)
 
         val protocolManager: ProtocolManager = ProtocolLibrary.getProtocolManager()
 

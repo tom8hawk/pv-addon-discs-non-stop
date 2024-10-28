@@ -12,6 +12,7 @@ import su.plo.voice.api.server.PlasmoVoiceServer
 import su.plo.voice.discs.utils.PluginKoinComponent
 import su.plo.voice.discs.utils.extend.asPlayer
 import su.plo.voice.discs.utils.extend.asVoicePlayer
+import su.plo.voice.discs.utils.extend.registerBukkit
 import java.util.concurrent.ConcurrentHashMap
 
 class CommandHandler: CommandExecutor, TabCompleter, PluginKoinComponent {
@@ -29,7 +30,7 @@ class CommandHandler: CommandExecutor, TabCompleter, PluginKoinComponent {
 
     private fun registerPermissions(permissions: List<Pair<String, PermissionDefault>>) {
         permissions.forEach {
-            voiceServer.minecraftServer.permissionManager.register(
+            voiceServer.minecraftServer.permissionManager.registerBukkit(
                 "pv.addon.discs.${it.first}",
                 it.second
             )
