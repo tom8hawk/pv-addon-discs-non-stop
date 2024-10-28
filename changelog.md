@@ -1,1 +1,1 @@
-- Default YouTube clients changed to fix 403 errors. They're also now configurable, see `youtube_source.clients` config option.
+- Yet another lavaplayer update to fix playback issues.
