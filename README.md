@@ -16,7 +16,7 @@
 
 Paper only [Plasmo Voice](https://github.com/plasmoapp/plasmo-voice) addon. Play audio from Youtube and other sources in Minecraft using music discs. Inspired by [SVC](https://github.com/henkelmax/simple-voice-chat)'s [AudioPlayer](https://github.com/henkelmax/audio-player) & [CustomDiscs](https://github.com/Navoei/CustomDiscs).
 
-The addon can stream audio from various sources instead of saving audio files on the server. It even supports Youtube and Twitch live streams. Thanks to the brilliant [LavaPlayer](https://github.com/sedmelluq/lavaplayer) library.
+The addon can stream audio from various sources instead of saving audio files on the server. It even supports Youtube and Twitch live streams. Thanks to the brilliant [LavaPlayer](https://github.com/lavalink-devs/lavaplayer) library.
 
 ## Installation
 
@@ -32,6 +32,8 @@ The addon can stream audio from various sources instead of saving audio files on
 
 `/disc search <query>` – Search tracks on YouTube.
 
+`/disc cancel [player]` – Cancel user's goat horn playback. You need `pv.addon.discs.cancel.other` permission to cancel for others.
+
 ## Permissions
 
 Commands are only available to OP by default:
@@ -41,6 +43,10 @@ Commands are only available to OP by default:
 `pv.addon.discs.erase` – Erase command
 
 `pv.addon.discs.search` – Search command
+
+`pv.addon.discs.cancel` – Command to cancel goat horn playback
+
+`pv.addon.discs.cancel.other` – Command to cancel goat horn playback for the other player
 
 `pv.addon.discs.burn.burnable_check_bypass` – If enabled in a config, you can only burn special discs. This permission allows you to bypass this check
 
@@ -72,6 +78,19 @@ If you want to stream audio from direct URLs
 - AAC streams
 - Stream playlists (M3U and PLS)
 
-## Planned features
+# Common issues
 
-- Copy discs like you can copy maps
+## "Sign in to confirm you're not a bot" / "Please sign in" using YouTube
+1) Make sure you're using the latest versions of `pv-addon-discs` and `pv-addon-lavaplayer-lib`.
+2) Set `youtube_source.use_oauth2` to `true` in `plugins/pv-addon-discs/discs.toml`.
+3) Restart your server (`/vreload` will not work).
+4) When `pv-addon-discs` initializes, you'll see a message in your console like this (code will be different): https://i.imgur.com/r1o5v8v.png. Follow the instructions in the console message.
+5) After successful authorization, you'll see a message in your console: `https://i.imgur.com/BD9jCRe.png`. You don't need to save token manually, it will be saved when the server is stopped.
+6) Done! YouTube tracks should now work as expected.
+
+## Read timed out
+This usually means that your server can't reach the server hosting the track.
+Check your server's internet connection and contact your hosting provider if the issue persists.
+
+If you have HTTP proxy, you can set it using `http_proxy` config option in `plugins/pv-addon-discs/discs.toml`.
+This feature is only available starting from 1.1.x.
