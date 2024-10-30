@@ -85,7 +85,7 @@ If you want to stream audio from direct URLs
 2) Set `youtube_source.use_oauth2` to `true` in `plugins/pv-addon-discs/discs.toml`.
 3) Restart your server (`/vreload` will not work).
 4) When `pv-addon-discs` initializes, you'll see a message in your console like this (code will be different): https://i.imgur.com/r1o5v8v.png. Follow the instructions in the console message.
-5) After successful authorization, you'll see a message in your console: `https://i.imgur.com/BD9jCRe.png`. You don't need to save token manually, it will be saved when the server is stopped.
+5) After successful authorization, you'll see a message in your console: https://i.imgur.com/BD9jCRe.png. You don't need to save token manually, it will be saved when the server is stopped.
 6) Done! YouTube tracks should now work as expected.
 
 ## Read timed out
