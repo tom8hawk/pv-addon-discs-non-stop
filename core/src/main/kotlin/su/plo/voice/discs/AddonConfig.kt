@@ -33,6 +33,16 @@ class AddonConfig {
 
     @ConfigField(
         comment = """
+            Uses mono sources to play tracks.
+            Quality is worse, but they will now have panning.
+            
+            Conversion happens on client side, so there is no server overhead.
+        """
+    )
+    val monoSources: Boolean = false
+
+    @ConfigField(
+        comment = """
             HTTP/HTTPS proxy. Valid formats:
             http://user:password@ip:port
             https://user:password@ip:port

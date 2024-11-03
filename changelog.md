@@ -1,2 +1,3 @@
 - Yet another lavaplayer update to fix playback issues.
 - Addons' permissions are now registered in Bukkit permissions. This resolves auto-complete and goat horns not working properly.
+- New config option `mono_sources` to use mono sources for playing the audio.

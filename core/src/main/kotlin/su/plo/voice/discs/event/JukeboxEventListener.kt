@@ -180,7 +180,7 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
             block.z.toDouble() + 0.5
         )
 
-        val source = sourceLine.createStaticSource(pos, true)
+        val source = sourceLine.createStaticSource(pos, !config.monoSources)
         source.setName(trackName)
 
         val distance = when (config.distance.enableBeaconLikeDistance) {

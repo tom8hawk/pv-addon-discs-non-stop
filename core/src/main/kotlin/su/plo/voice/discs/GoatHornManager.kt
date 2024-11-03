@@ -101,7 +101,7 @@ class GoatHornManager : PluginKoinComponent {
             ?.content()
             ?: track.info.title
 
-        val source = sourceLine.createPlayerSource(voicePlayer, true)
+        val source = sourceLine.createPlayerSource(voicePlayer, !config.monoSources)
             .apply {
                 setName(trackName)
                 removeFilter(filters.first()) // the first filter is always the "self" filter
