@@ -21,6 +21,7 @@ import org.bukkit.event.world.ChunkLoadEvent
 import org.bukkit.event.world.ChunkUnloadEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
+import org.koin.core.component.get
 import org.koin.core.component.inject
 import su.plo.slib.api.chat.component.McTextComponent
 import su.plo.slib.api.chat.style.McTextStyle
@@ -39,11 +40,11 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
 
     private val keys: AddonKeys by inject()
     private val plugin: JavaPlugin by inject()
-    private val config: AddonConfig by inject()
+    private val config: AddonConfig by getter()
     private val voiceServer: PlasmoVoiceServer by inject()
-    private val audioPlayerManager: PlasmoAudioPlayerManager by inject()
-    private val debugLogger: DebugLogger by inject()
-    private val sourceLine: ServerSourceLine by inject()
+    private val audioPlayerManager: PlasmoAudioPlayerManager by getter()
+    private val debugLogger: DebugLogger by getter()
+    private val sourceLine: ServerSourceLine by getter()
 
     private val jobByBlock: MutableMap<Block, Job> = HashMap()
 

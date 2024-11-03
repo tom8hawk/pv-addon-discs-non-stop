@@ -10,6 +10,8 @@ import su.plo.voice.api.server.audio.provider.AudioFrameResult
 import su.plo.voice.api.server.audio.source.ServerProximitySource
 import su.plo.voice.discs.utils.PluginKoinComponent
 import su.plo.voice.discs.config.YoutubeClient
+import su.plo.voice.discs.utils.extend.getValue
+import su.plo.voice.discs.utils.extend.getter
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
@@ -41,8 +43,8 @@ class PlasmoAudioPlayerManager : PluginKoinComponent {
 
     private val plugin: JavaPlugin by inject()
     private val voiceServer: PlasmoVoiceServer by inject()
-    private val debugLogger: DebugLogger by inject()
-    private val config: AddonConfig by inject()
+    private val debugLogger: DebugLogger by getter()
+    private val config: AddonConfig by getter()
 
     private val lavaPlayerManager: AudioPlayerManager = DefaultAudioPlayerManager()
     private val encryption = voiceServer.defaultEncryption

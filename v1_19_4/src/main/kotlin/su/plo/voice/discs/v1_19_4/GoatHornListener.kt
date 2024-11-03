@@ -11,12 +11,14 @@ import su.plo.voice.discs.AddonConfig
 import su.plo.voice.discs.AddonKeys
 import su.plo.voice.discs.GoatHornManager
 import su.plo.voice.discs.utils.PluginKoinComponent
+import su.plo.voice.discs.utils.extend.getValue
+import su.plo.voice.discs.utils.extend.getter
 import su.plo.voice.discs.utils.extend.hasIdentifier
 
 class GoatHornListener : Listener, PluginKoinComponent {
 
     private val keys: AddonKeys by inject()
-    private val config: AddonConfig by inject()
+    private val config: AddonConfig by getter()
     private val hornManager: GoatHornManager by inject()
 
     @EventHandler(priority = EventPriority.MONITOR)

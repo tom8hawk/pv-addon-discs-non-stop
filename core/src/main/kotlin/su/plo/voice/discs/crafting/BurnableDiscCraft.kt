@@ -18,11 +18,13 @@ import su.plo.voice.discs.AddonKeys
 import su.plo.voice.discs.utils.MaterialUtil
 import su.plo.voice.discs.utils.PluginKoinComponent
 import su.plo.voice.discs.utils.extend.forbidGrindstone
+import su.plo.voice.discs.utils.extend.getValue
+import su.plo.voice.discs.utils.extend.getter
 
 class BurnableDiscCraft : PluginKoinComponent {
 
     private val plugin: JavaPlugin by inject()
-    private val config: AddonConfig by inject()
+    private val config: AddonConfig by getter()
     private val keys: AddonKeys by inject()
 
     private val groupKey = NamespacedKey(plugin, "burnable_record_craft")

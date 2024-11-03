@@ -20,6 +20,8 @@ import su.plo.voice.api.server.PlasmoVoiceServer
 import su.plo.voice.api.server.audio.line.ServerSourceLine
 import su.plo.voice.discs.utils.PluginKoinComponent
 import su.plo.voice.discs.utils.extend.asVoicePlayer
+import su.plo.voice.discs.utils.extend.getValue
+import su.plo.voice.discs.utils.extend.getter
 import su.plo.voice.discs.utils.extend.identifier
 import su.plo.voice.discs.utils.extend.sendTranslatable
 import su.plo.voice.discs.utils.extend.suspendSync
@@ -30,11 +32,11 @@ class GoatHornManager : PluginKoinComponent {
 
     private val plugin: JavaPlugin by inject()
     private val keys: AddonKeys by inject()
-    private val config: AddonConfig by inject()
+    private val config: AddonConfig by getter()
     private val voiceServer: PlasmoVoiceServer by inject()
-    private val audioPlayerManager: PlasmoAudioPlayerManager by inject()
-    private val debugLogger: DebugLogger by inject()
-    private val sourceLine: ServerSourceLine by inject()
+    private val audioPlayerManager: PlasmoAudioPlayerManager by getter()
+    private val debugLogger: DebugLogger by getter()
+    private val sourceLine: ServerSourceLine by getter()
 
     private val jobByPlayer: MutableMap<Player, Job> = ConcurrentHashMap()
 
