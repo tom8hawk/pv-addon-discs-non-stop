@@ -107,7 +107,6 @@ class GoatHornManager : PluginKoinComponent {
             .apply {
                 setName(trackName)
                 removeFilter(filters.first()) // the first filter is always the "self" filter
-                println(filters)
             }
 
         val distance = config.goatHorn.distance
