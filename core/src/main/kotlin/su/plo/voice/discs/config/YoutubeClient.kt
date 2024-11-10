@@ -11,18 +11,19 @@ import su.plo.voice.lavaplayer.libs.dev.lavalink.youtube.clients.TvHtml5Embedded
 import su.plo.voice.lavaplayer.libs.dev.lavalink.youtube.clients.Web
 import su.plo.voice.lavaplayer.libs.dev.lavalink.youtube.clients.WebEmbedded
 import su.plo.voice.lavaplayer.libs.dev.lavalink.youtube.clients.skeleton.Client
+import java.util.function.Supplier
 
 enum class YoutubeClient(
-    val client: Client
+    val client: Supplier<Client>
 ) {
-    MUSIC(Music()),
-    WEB(Web()),
-    WEBEMBEDDED(WebEmbedded()),
-    ANDROID(Android()),
-    ANDROID_VR(AndroidVr()),
-    ANDROID_TESTSUITE(AndroidTestsuite()),
-    ANDROID_MUSIC(AndroidMusic()),
-    MEDIA_CONNECT(MediaConnect()),
-    IOS(Ios()),
-    TVHTML5EMBEDDED(TvHtml5Embedded())
+    MUSIC({ Music() }),
+    WEB({ Web() }),
+    WEBEMBEDDED({ WebEmbedded() }),
+    ANDROID({ Android() }),
+    ANDROID_VR({ AndroidVr() }),
+    ANDROID_TESTSUITE({ AndroidTestsuite() }),
+    ANDROID_MUSIC({ AndroidMusic() }),
+    MEDIA_CONNECT({ MediaConnect() }),
+    IOS({ Ios() }),
+    TVHTML5EMBEDDED({ TvHtml5Embedded() })
 }

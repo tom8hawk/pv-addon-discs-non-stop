@@ -219,7 +219,7 @@ class PlasmoAudioPlayerManager : PluginKoinComponent {
         plugin.slF4JLogger.info("YouTube clients: {}", youtubeClients)
 
         lavaPlayerManager.registerSourceManager(
-            YoutubeAudioSourceManager(true, *youtubeClients.map { it.client }.toTypedArray())
+            YoutubeAudioSourceManager(true, *youtubeClients.map { it.client.get() }.toTypedArray())
                 .also { source ->
                     proxyHttpBuilder?.let { source.httpInterfaceManager.configureBuilder(it) }
 
