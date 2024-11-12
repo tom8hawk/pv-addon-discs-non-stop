@@ -29,6 +29,7 @@ import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.track.Audio
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.track.AudioTrackState
 import su.plo.voice.lavaplayer.libs.dev.lavalink.youtube.YoutubeAudioSourceManager
+import su.plo.voice.lavaplayer.libs.dev.lavalink.youtube.clients.Web
 import su.plo.voice.lavaplayer.libs.org.apache.http.HttpHost
 import su.plo.voice.lavaplayer.libs.org.apache.http.auth.AuthScope
 import su.plo.voice.lavaplayer.libs.org.apache.http.auth.UsernamePasswordCredentials
@@ -223,7 +224,10 @@ class PlasmoAudioPlayerManager : PluginKoinComponent {
                 .also { source ->
                     proxyHttpBuilder?.let { source.httpInterfaceManager.configureBuilder(it) }
 
-                    if (config.youtubeSource.useOauth2) {
+                    val poToken = config.youtubeSource.poToken
+                    if (poToken != null) {
+                        Web.setPoTokenAndVisitorData(poToken.token, poToken.visitorData)
+                    } else if (config.youtubeSource.useOauth2) {
                         val refreshToken = File(plugin.dataFolder, ".youtube-token")
                             .takeIf { it.isFile && it.exists() }
                             ?.readText()

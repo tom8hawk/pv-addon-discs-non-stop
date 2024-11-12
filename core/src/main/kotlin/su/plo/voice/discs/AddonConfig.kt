@@ -169,6 +169,18 @@ class AddonConfig {
 
         @ConfigField(
             comment = """
+                https://github.com/lavalink-devs/youtube-source?tab=readme-ov-file#using-a-potoken
+            """,
+            nullComment = """
+                [youtube_source.po_token]
+                token = "paste your po_token here"
+                visitor_data = "paste your visitor_data here"
+            """
+        )
+        val poToken: PoToken? = null
+
+        @ConfigField(
+            comment = """
                 You can check available clients here: https://github.com/lavalink-devs/youtube-source?tab=readme-ov-file#available-clients
             """,
             nullComment = """
@@ -176,6 +188,15 @@ class AddonConfig {
             """
         )
         val clients: List<String>? = null
+
+        @Config
+        class PoToken {
+            @ConfigField
+            val token: String = ""
+
+            @ConfigField
+            val visitorData: String = ""
+        }
     }
 
     @ConfigField
