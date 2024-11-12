@@ -1,4 +1,4 @@
-package su.plo.voice.discs.v1_19_4
+package su.plo.voice.discs.mcver
 
 import org.bukkit.Material
 import org.bukkit.event.EventHandler

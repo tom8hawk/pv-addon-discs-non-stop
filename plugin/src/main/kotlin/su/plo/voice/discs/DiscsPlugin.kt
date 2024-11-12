@@ -51,7 +51,9 @@ class DiscsPlugin : JavaPlugin() {
     private val goatHornHelper: GoatHornHelper by lazy {
         val mcVersion = Bukkit.getServer().getMinecraftVersionInt()
 
-        if (mcVersion >= 12006) {
+        if (mcVersion >= 12103) {
+            su.plo.voice.discs.v1_21_3.GoatHornHelperImpl()
+        } else if (mcVersion >= 12006) {
             su.plo.voice.discs.v1_20_6.GoatHornHelperImpl()
         } else if (mcVersion >= 11902) {
             su.plo.voice.discs.v1_19_4.GoatHornHelperImpl()

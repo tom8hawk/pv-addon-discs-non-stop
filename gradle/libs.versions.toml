@@ -15,7 +15,7 @@ reflection-remapper = "0.1.1"
 protocol-lib = "4.7.0"
 
 crowdin = "1.1.0-SNAPSHOT"
-pv-gradle-plugin = "1.0.2-SNAPSHOT"
+pv-gradle-plugin = "1.0.3-SNAPSHOT"
 runpaper = "2.2.3"
 pluginyml = "0.6.0"
 

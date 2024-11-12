@@ -1,4 +1,4 @@
-package su.plo.voice.discs.v1_20_6
+package su.plo.voice.discs.mcver
 
 import org.bukkit.Material
 import org.bukkit.MusicInstrument
@@ -6,31 +6,45 @@ import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.MusicInstrumentMeta
 import su.plo.voice.discs.item.GoatHornHelper
+import su.plo.voice.discs.mcver.nms.ReflectionProxies
 import su.plo.voice.discs.utils.ReflectionUtil
-import su.plo.voice.discs.v1_20_6.nms.ReflectionProxies
 
 class GoatHornHelperImpl : GoatHornHelper {
 
-    private val emptyInstrument by lazy {
+    //? if >=1.20.6 {
+    /*private val emptyInstrument by lazy {
         ReflectionProxies.holder.direct(
             ReflectionProxies.instrument.newInstance(
                 ReflectionProxies.holder.direct(ReflectionProxies.soundEvents.empty()),
+                //? if >=1.21.3 {
+                /^140.0f,
+                ^///?} else {
                 140,
-                256f
+                //?}
+                256f,
+                //? if >=1.21.3
+                /^ReflectionProxies.component.empty()^/
             )
         )
     }
+    *///?}
 
     override fun setEmptyInstrument(item: ItemStack) {
         if (item.type != Material.GOAT_HORN) return
 
         val mcItem = ReflectionUtil.getMinecraftItemStack(item)
 
-        ReflectionProxies.itemStack.set(
+        //? if >=1.20.6 {
+        /*ReflectionProxies.itemStack.set(
             mcItem,
             ReflectionProxies.dataComponents.instrument(),
             emptyInstrument
         )
+        *///?} else {
+        val compoundTag = ReflectionProxies.itemStack.getOrCreateTag(mcItem)
+
+        ReflectionProxies.compoundTag.putString(compoundTag, "instrument", "empty")
+        //?}
     }
 
     override fun getInstrument(item: ItemStack): String {

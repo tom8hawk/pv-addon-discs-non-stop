@@ -1,6 +1,7 @@
-package su.plo.voice.discs.v1_20_6.nms
+package su.plo.voice.discs.mcver.nms
 
-import xyz.jpenilla.reflectionremapper.proxy.annotation.FieldGetter
+//? if >=1.20.6 {
+/*import xyz.jpenilla.reflectionremapper.proxy.annotation.FieldGetter
 import xyz.jpenilla.reflectionremapper.proxy.annotation.Proxies
 import xyz.jpenilla.reflectionremapper.proxy.annotation.Static
 
@@ -13,3 +14,4 @@ interface DataComponentsProxy {
     @FieldGetter("INSTRUMENT")
     fun instrument(): Any
 }
+*///?}

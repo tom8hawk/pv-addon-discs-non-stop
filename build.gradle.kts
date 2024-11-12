@@ -2,10 +2,12 @@ plugins {
     kotlin("jvm") version(libs.versions.kotlin.get())
     alias(libs.plugins.pv) apply false
     alias(libs.plugins.pv.java.templates)
-//    id("io.papermc.paperweight.userdev") version "1.7.2" apply false
+    id("io.papermc.paperweight.userdev") version "1.7.2" apply false
 }
 
 allprojects {
+    if (project == project(":nms")) return@allprojects
+
     apply(plugin = "kotlin")
 
     repositories {

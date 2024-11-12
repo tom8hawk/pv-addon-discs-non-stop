@@ -1,6 +1,7 @@
-package su.plo.voice.discs.v1_20_6.nms
+package su.plo.voice.discs.mcver.nms
 
-import xyz.jpenilla.reflectionremapper.proxy.annotation.Proxies
+//? if >=1.20.6 {
+/*import xyz.jpenilla.reflectionremapper.proxy.annotation.Proxies
 import xyz.jpenilla.reflectionremapper.proxy.annotation.Static
 
 @Proxies(
@@ -11,3 +12,4 @@ interface HolderProxy {
     @Static
     fun direct(value: Any): Any
 }
+*///?}

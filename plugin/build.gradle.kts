@@ -12,8 +12,9 @@ base.archivesName = rootProject.name
 
 dependencies {
     implementation(project(":core")) { isTransitive = false }
-    implementation(project(":v1_19_4")) { isTransitive = false }
-    implementation(project(":v1_20_6")) { isTransitive = false }
+    implementation(project(":nms:1.19.4", "shadow")) { isTransitive = false }
+    implementation(project(":nms:1.20.6", "shadow")) { isTransitive = false }
+    implementation(project(":nms:1.21.3", "shadow")) { isTransitive = false }
     compileOnly(libs.paper.v11605)
 
     implementation(platform(libs.koin.bom)) {
@@ -57,7 +58,7 @@ tasks {
         systemProperty("plasmovoice.alpha.disableversioncheck", "true")
     }
 
-    build {
+    create("chiseledBuild") {
         dependsOn(shadowJar)
     }
 

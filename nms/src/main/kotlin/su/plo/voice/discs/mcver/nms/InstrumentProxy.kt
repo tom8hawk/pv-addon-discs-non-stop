@@ -1,6 +1,7 @@
-package su.plo.voice.discs.v1_20_6.nms
+package su.plo.voice.discs.mcver.nms
 
-import xyz.jpenilla.reflectionremapper.proxy.annotation.ConstructorInvoker
+//? if >=1.20.6 {
+/*import xyz.jpenilla.reflectionremapper.proxy.annotation.ConstructorInvoker
 import xyz.jpenilla.reflectionremapper.proxy.annotation.Proxies
 import xyz.jpenilla.reflectionremapper.proxy.annotation.Type
 
@@ -12,7 +13,14 @@ interface InstrumentProxy {
     @ConstructorInvoker
     fun newInstance(
         @Type(className = "net.minecraft.core.Holder") holder: Any,
+        //? if >=1.21.3 {
+        /^duration: Float,
+        ^///?} else {
         duration: Int,
-        range: Float
+        //?}
+        range: Float,
+        //? if >=1.21.3
+        /^@Type(className = "net.minecraft.network.chat.Component") component: Any^/
     ): Any
 }
+*///?}
