@@ -212,10 +212,11 @@ class PlasmoAudioPlayerManager : PluginKoinComponent {
             }
             ?.takeIf { it.isNotEmpty() }
             ?: listOf(
-                YoutubeClient.WEB,
+                YoutubeClient.MUSIC,
                 YoutubeClient.ANDROID_VR,
+                YoutubeClient.WEB,
                 YoutubeClient.WEBEMBEDDED,
-                YoutubeClient.MUSIC
+                YoutubeClient.TVHTML5EMBEDDED,
             )
         plugin.slF4JLogger.info("YouTube clients: {}", youtubeClients)
 

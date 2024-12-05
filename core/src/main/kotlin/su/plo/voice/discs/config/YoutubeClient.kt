@@ -2,10 +2,9 @@ package su.plo.voice.discs.config
 
 import su.plo.voice.lavaplayer.libs.dev.lavalink.youtube.clients.Android
 import su.plo.voice.lavaplayer.libs.dev.lavalink.youtube.clients.AndroidMusic
-import su.plo.voice.lavaplayer.libs.dev.lavalink.youtube.clients.AndroidTestsuite
 import su.plo.voice.lavaplayer.libs.dev.lavalink.youtube.clients.AndroidVr
 import su.plo.voice.lavaplayer.libs.dev.lavalink.youtube.clients.Ios
-import su.plo.voice.lavaplayer.libs.dev.lavalink.youtube.clients.MediaConnect
+import su.plo.voice.lavaplayer.libs.dev.lavalink.youtube.clients.MWeb
 import su.plo.voice.lavaplayer.libs.dev.lavalink.youtube.clients.Music
 import su.plo.voice.lavaplayer.libs.dev.lavalink.youtube.clients.TvHtml5Embedded
 import su.plo.voice.lavaplayer.libs.dev.lavalink.youtube.clients.Web
@@ -18,12 +17,11 @@ enum class YoutubeClient(
 ) {
     MUSIC({ Music() }),
     WEB({ Web() }),
+    MWEB({ MWeb() }),
     WEBEMBEDDED({ WebEmbedded() }),
     ANDROID({ Android() }),
     ANDROID_VR({ AndroidVr() }),
-    ANDROID_TESTSUITE({ AndroidTestsuite() }),
     ANDROID_MUSIC({ AndroidMusic() }),
-    MEDIA_CONNECT({ MediaConnect() }),
     IOS({ Ios() }),
     TVHTML5EMBEDDED({ TvHtml5Embedded() })
 }
