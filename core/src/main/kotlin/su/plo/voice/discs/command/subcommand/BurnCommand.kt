@@ -15,12 +15,14 @@ import org.koin.core.component.inject
 import su.plo.slib.api.chat.component.McTextComponent
 import su.plo.slib.api.permission.PermissionDefault
 import su.plo.voice.api.server.player.VoicePlayer
+import su.plo.voice.discs.AddonConfig
 import su.plo.voice.discs.GoatHornManager
 import su.plo.voice.discs.command.SubCommand
 import su.plo.voice.discs.item.GoatHornHelper
 import su.plo.voice.discs.utils.extend.asPlayer
 import su.plo.voice.discs.utils.extend.asVoicePlayer
 import su.plo.voice.discs.utils.extend.forbidGrindstone
+import su.plo.voice.discs.utils.extend.isCustomDisc
 import su.plo.voice.discs.utils.extend.render
 import su.plo.voice.discs.utils.extend.sendTranslatable
 import su.plo.voice.discs.utils.extend.suspendSync
@@ -155,7 +157,24 @@ class BurnCommand : SubCommand() {
                     .color(NamedTextColor.GRAY)
                     .build()
 
-                meta.lore(listOf(loreName))
+                when (config.burnLoreMethod) {
+                    AddonConfig.LoreMethod.REPLACE -> {
+                        meta.lore(listOf(loreName))
+                    }
+
+                    AddonConfig.LoreMethod.APPEND -> {
+                        val currentLore = meta.lore()?.let {
+                            if (with(keys) { item.isCustomDisc() }) {
+                                it.subList(0, it.size - 1)
+                            } else {
+                                it
+                            }
+                        } ?: emptyList()
+                        meta.lore(currentLore + listOf(loreName))
+                    }
+
+                    AddonConfig.LoreMethod.DISABLE -> {} // do nothing
+                }
             }
 
             if (isGoatHorn) {

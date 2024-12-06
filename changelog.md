@@ -1,6 +1,4 @@
-- Yet another lavaplayer update to fix playback issues.
-- Addons' permissions are now registered in Bukkit permissions. This resolves auto-complete and goat horns not working properly.
-- New config option `mono_sources` to use mono sources for playing the audio.
-- `/vreload` command is now reloading the addon's config properly.
-- Add [poToken](https://github.com/lavalink-devs/youtube-source?tab=readme-ov-file#using-a-potoken) support for YouTube source.
-- Fixed discs commands not working properly after `/vreload`.
+- Added option to change lore burning method (`burn_lore_method` in the addon config):
+  - DISABLE — Disables any lore manipulations on burn/erase.
+  - REPLACE (default) — Replaces the whole lore with a string containing the song name on burn, and removes the lore completely on erase.
+  - APPEND — Adds a new line to the end of the lore on burn, and removes the last line on erase.

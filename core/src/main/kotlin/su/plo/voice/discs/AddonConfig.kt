@@ -31,6 +31,24 @@ class AddonConfig {
     )
     var addGlintToCustomDiscs = false
 
+    enum class LoreMethod {
+        DISABLE,
+        REPLACE,
+        APPEND
+    }
+    @ConfigField(
+        comment = """
+            The method for creating/removing a lore on burning/erasing the discs:
+            
+            DISABLE — Disables any lore manipulations on burn/erase.
+            REPLACE — Replaces the whole lore with a string containing the song name on burn, and removes the lore completely on erase.
+            APPEND — Adds a new line to the end of the lore on burn, and removes the last line on erase.
+            
+            Default is REPLACE.
+        """
+    )
+    val burnLoreMethod = LoreMethod.REPLACE
+
     @ConfigField(
         comment = """
             Uses mono sources to play tracks.
