@@ -12,14 +12,16 @@ import su.plo.voice.discs.AddonConfig
 import su.plo.voice.discs.AddonKeys
 import su.plo.voice.discs.PlasmoAudioPlayerManager
 import su.plo.voice.discs.utils.PluginKoinComponent
+import su.plo.voice.discs.utils.extend.getValue
+import su.plo.voice.discs.utils.extend.getter
 
 abstract class SubCommand : PluginKoinComponent {
 
     protected val voiceServer: PlasmoVoiceServer by inject()
     protected val keys: AddonKeys by inject()
-    protected val config: AddonConfig by inject()
-    protected val audioPlayerManager: PlasmoAudioPlayerManager by inject()
-    protected val debugLogger: DebugLogger by inject()
+    protected val config: AddonConfig by getter()
+    protected val audioPlayerManager: PlasmoAudioPlayerManager by getter()
+    protected val debugLogger: DebugLogger by getter()
 
     protected val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 

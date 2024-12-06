@@ -3,3 +3,4 @@
 - New config option `mono_sources` to use mono sources for playing the audio.
 - `/vreload` command is now reloading the addon's config properly.
 - Add [poToken](https://github.com/lavalink-devs/youtube-source?tab=readme-ov-file#using-a-potoken) support for YouTube source.
+- Fixed discs commands not working properly after `/vreload`.
