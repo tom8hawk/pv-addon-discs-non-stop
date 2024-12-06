@@ -162,7 +162,7 @@ class AddonConfig {
                 Follow the instructions in this prompt.
                 If you do everything right, you will see "Token retrieved successfully" in your console.
                 You only need to do this once;
-                the token will be stored in "pv-addon-discs/.youtube-token" on plugin shutdown.
+                the token will be stored in "pv-addon-discs/.youtube-token" after successful authorization.
             """
         )
         val useOauth2: Boolean = false

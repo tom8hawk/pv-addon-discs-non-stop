@@ -8,8 +8,8 @@ import su.plo.voice.api.server.PlasmoVoiceServer
 import su.plo.voice.api.server.audio.provider.AudioFrameProvider
 import su.plo.voice.api.server.audio.provider.AudioFrameResult
 import su.plo.voice.api.server.audio.source.ServerProximitySource
-import su.plo.voice.discs.utils.PluginKoinComponent
 import su.plo.voice.discs.config.YoutubeClient
+import su.plo.voice.discs.utils.PluginKoinComponent
 import su.plo.voice.discs.utils.extend.getValue
 import su.plo.voice.discs.utils.extend.getter
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
@@ -39,6 +39,7 @@ import java.io.File
 import java.net.URI
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
+import kotlin.concurrent.fixedRateTimer
 
 class PlasmoAudioPlayerManager : PluginKoinComponent {
 
@@ -54,15 +55,8 @@ class PlasmoAudioPlayerManager : PluginKoinComponent {
         registerSources()
     }
 
-    fun save() {
-        lavaPlayerManager.sourceManagers
-            .filterIsInstance<YoutubeAudioSourceManager>()
-            .firstOrNull()
-            ?.takeIf { it.oauth2RefreshToken != null }
-            ?.let {
-                val refreshTokenFile = File(plugin.dataFolder, ".youtube-token")
-                refreshTokenFile.writeText(it.oauth2RefreshToken!!)
-            }
+    fun shutdown() {
+        lavaPlayerManager.shutdown()
     }
 
     fun startTrackJob(track: AudioTrack, source: ServerProximitySource<*>, distance: Short): Job {
@@ -186,6 +180,34 @@ class PlasmoAudioPlayerManager : PluginKoinComponent {
         return host to credentials
     }
 
+    private fun saveToken() {
+        lavaPlayerManager.sourceManagers
+            .filterIsInstance<YoutubeAudioSourceManager>()
+            .firstOrNull()
+            ?.takeIf { it.oauth2RefreshToken != null }
+            ?.let {
+                val refreshTokenFile = File(plugin.dataFolder, ".youtube-token")
+                refreshTokenFile.writeText(it.oauth2RefreshToken!!)
+                plugin.slF4JLogger.info("YouTube oauth2 refresh token saved to .youtube-token")
+            }
+    }
+
+    private fun listenForTokenChange(youtubeSourceManager: YoutubeAudioSourceManager) {
+        val currentToken = youtubeSourceManager.oauth2RefreshToken
+        fixedRateTimer(
+            "[pv-addon-discs] [youtube-refresh-token-listener]",
+            true,
+            5000L,
+            5000L,
+        ) {
+            val newToken = youtubeSourceManager.oauth2RefreshToken ?: return@fixedRateTimer
+            if (currentToken == newToken) return@fixedRateTimer
+
+            saveToken()
+            cancel()
+        }
+    }
+
     private fun proxyHttpBuilder(): Consumer<HttpClientBuilder>? {
         val (host, credentials) = httpProxy() ?: return null
 
@@ -234,6 +256,7 @@ class PlasmoAudioPlayerManager : PluginKoinComponent {
                             ?.readText()
                             ?.trim()
                         source.useOauth2(refreshToken, false)
+                        if (refreshToken == null) listenForTokenChange(source)
                     }
                 }
         )

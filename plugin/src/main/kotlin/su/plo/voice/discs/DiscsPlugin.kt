@@ -151,7 +151,7 @@ class DiscsPlugin : JavaPlugin() {
         PlasmoVoiceServer.getAddonsLoader().unload(this)
 
         if (::audioPlayerManager.isInitialized) {
-            audioPlayerManager.save()
+            audioPlayerManager.shutdown()
         }
     }
 
@@ -169,6 +169,10 @@ class DiscsPlugin : JavaPlugin() {
         ).apply {
             setDefaultVolume(addonConfig.defaultSourceLineVolume)
         }.build()
+
+        if (::audioPlayerManager.isInitialized) {
+            audioPlayerManager.shutdown()
+        }
 
         audioPlayerManager = PlasmoAudioPlayerManager()
     }
