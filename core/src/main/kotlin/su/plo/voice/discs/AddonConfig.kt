@@ -188,6 +188,9 @@ class AddonConfig {
         @ConfigField(
             comment = """
                 https://github.com/lavalink-devs/youtube-source?tab=readme-ov-file#using-a-potoken
+               
+                You don't need to specify a poToken if using oauth2, and vice versa.
+                If poToken is specified, oauth2 will be disabled.
             """,
             nullComment = """
                 [youtube_source.po_token]
