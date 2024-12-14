@@ -81,7 +81,7 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
 
         val jukebox = block.asJukebox() ?: return
 
-        if (jukebox.isPlaying) return
+        if (jukebox.record.type != Material.AIR) return
 
         val item = event.item?.takeIf { it.isCustomDisc() } ?: return
 

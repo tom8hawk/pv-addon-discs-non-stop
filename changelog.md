@@ -2,3 +2,4 @@
   - DISABLE — Disables any lore manipulations on burn/erase.
   - REPLACE (default) — Replaces the whole lore with a string containing the song name on burn, and removes the lore completely on erase.
   - APPEND — Adds a new line to the end of the lore on burn, and removes the last line on erase.
+- Fixed clicking with a custom disc into a stopped jukebox with a disc already inside would cause it to play track without actually inserting the disc. 
