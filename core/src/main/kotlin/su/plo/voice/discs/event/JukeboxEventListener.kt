@@ -64,7 +64,7 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
         val chunk = event.chunk
 
         jobByBlock.keys
-            .filter { it.chunk == chunk }
+            .filter { it.inChunk(chunk) }
             .forEach {
                 jobByBlock.remove(it)?.cancel()
             }
