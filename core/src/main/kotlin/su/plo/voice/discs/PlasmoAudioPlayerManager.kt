@@ -67,7 +67,10 @@ class PlasmoAudioPlayerManager : PluginKoinComponent {
 
         val frameProvider = object : AudioFrameProvider {
             override fun provide20ms(): AudioFrameResult =
-                if (track.state == AudioTrackState.FINISHED) {
+                if (
+                    track.state == AudioTrackState.FINISHED ||
+                    (track.state == AudioTrackState.INACTIVE && track.position > 0)
+                ) {
                     AudioFrameResult.Finished
                 } else {
                     val frame = player.provide()?.data?.let {
