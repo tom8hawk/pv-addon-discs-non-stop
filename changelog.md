@@ -4,3 +4,4 @@
   - APPEND — Adds a new line to the end of the lore on burn, and removes the last line on erase.
 - Fixed clicking with a custom disc into a stopped jukebox with a disc already inside would cause it to play track without actually inserting the disc.
 - Fixed an IllegalStateException on ChunkUnloadEvent when using Folia [#92](https://github.com/plasmoapp/pv-addon-discs/issues/92).
+- Added support for minecart with hopper. Pulling item from jukebox using minecart hopper stops the track.

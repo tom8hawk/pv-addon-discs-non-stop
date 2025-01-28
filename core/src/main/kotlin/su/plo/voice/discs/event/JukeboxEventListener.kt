@@ -9,6 +9,7 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.Jukebox
+import org.bukkit.entity.minecart.HopperMinecart
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -270,6 +271,19 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
         }.count()
 
     inner class HopperEventListener : Listener {
+
+        @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+        fun onMinecartHopperPull(event: InventoryMoveItemEvent) = with(keys) {
+            if (event.source.type.name != "JUKEBOX") return@with
+            if (event.destination.holder !is HopperMinecart) return@with
+
+            val block = event.source.location?.block ?: return@with
+
+            val item = event.item
+            if (!item.isCustomDisc()) return@with
+
+            jobByBlock.remove(block)?.cancel()
+        }
 
         @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
         fun onHopperInsertToJukebox(event: InventoryMoveItemEvent) = with(keys) {
