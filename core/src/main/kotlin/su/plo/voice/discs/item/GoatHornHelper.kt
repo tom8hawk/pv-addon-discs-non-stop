@@ -8,4 +8,6 @@ interface GoatHornHelper {
     fun getInstrument(item: ItemStack): String
 
     fun setInstrument(item: ItemStack, instrument: String)
+
+    fun getAllHorns(): List<Pair<ItemStack, String>>
 }

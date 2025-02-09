@@ -26,6 +26,7 @@ import su.plo.voice.discs.crafting.BurnableDiscCraft
 import su.plo.voice.discs.event.ForbidGrindstoneListener
 import su.plo.voice.discs.event.JukeboxEventListener
 import su.plo.voice.discs.item.GoatHornHelper
+import su.plo.voice.discs.crafting.BurnableHornCraft
 import su.plo.voice.discs.packet.CancelJukeboxPlayEvent
 import su.plo.voice.discs.utils.KOIN_INSTANCE
 import su.plo.voice.discs.utils.extend.debug
@@ -144,6 +145,13 @@ class DiscsPlugin : JavaPlugin() {
 
         if (addonConfig.burnableTag.enableDefaultRecipe) {
             BurnableDiscCraft().also { it.registerRecipes() }
+
+            val mcVersion = Bukkit.getServer().getMinecraftVersionInt()
+
+            if (mcVersion >= 11902) {
+                println("register horns")
+                BurnableHornCraft().registerRecipes()
+            }
         }
     }
 

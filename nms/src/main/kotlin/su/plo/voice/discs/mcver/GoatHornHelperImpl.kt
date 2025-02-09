@@ -67,4 +67,13 @@ class GoatHornHelperImpl : GoatHornHelper {
             it.instrument = musicInstrument
         }
     }
+
+    override fun getAllHorns(): List<Pair<ItemStack, String>> =
+        MusicInstrument.values().map { instrument ->
+            ItemStack(Material.GOAT_HORN).also { item ->
+                item.editMeta(MusicInstrumentMeta::class.java) {
+                    it.instrument = instrument
+                }
+            } to instrument.key().value()
+        }
 }
