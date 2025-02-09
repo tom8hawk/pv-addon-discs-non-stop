@@ -149,7 +149,6 @@ class DiscsPlugin : JavaPlugin() {
             val mcVersion = Bukkit.getServer().getMinecraftVersionInt()
 
             if (mcVersion >= 11902) {
-                println("register horns")
                 BurnableHornCraft().registerRecipes()
             }
         }
