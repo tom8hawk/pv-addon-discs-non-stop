@@ -14,10 +14,7 @@ allprojects {
         mavenCentral()
         mavenLocal()
 
-        maven {
-            name = "codemc-snapshots"
-            url = uri("https://repo.codemc.io/repository/maven-snapshots/")
-        }
+        maven("https://repo.codemc.io/repository/maven-snapshots/")
 
         maven("https://repo.plasmoverse.com/snapshots")
         maven("https://repo.plasmoverse.com/releases")
@@ -38,7 +35,7 @@ allprojects {
         compileOnly(rootProject.libs.kotlinx.coroutines.core)
         compileOnly(rootProject.libs.kotlinx.coroutines.jdk8)
 
-        compileOnly(rootProject.libs.protocollib)
+        compileOnly(rootProject.libs.packetevents)
         compileOnly(rootProject.libs.pv)
         compileOnly(rootProject.libs.pv.lavaplayer)
         compileOnly(rootProject.libs.slib)

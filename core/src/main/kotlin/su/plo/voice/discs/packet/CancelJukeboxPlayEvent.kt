@@ -1,39 +1,34 @@
 package su.plo.voice.discs.packet
 
-import com.comphenix.protocol.PacketType
-import com.comphenix.protocol.events.ListenerPriority
-import com.comphenix.protocol.events.PacketAdapter
-import com.comphenix.protocol.events.PacketEvent
-import org.bukkit.plugin.java.JavaPlugin
+import com.github.retrooper.packetevents.event.PacketListener
+import com.github.retrooper.packetevents.event.PacketSendEvent
+import com.github.retrooper.packetevents.protocol.packettype.PacketType
+import com.github.retrooper.packetevents.util.Vector3i
+import org.bukkit.Bukkit
+import org.bukkit.World
 import su.plo.voice.discs.AddonKeys
-import su.plo.voice.discs.utils.extend.asJukebox
-import su.plo.voice.discs.utils.extend.isCustomDisc
+import su.plo.voice.discs.event.JukeboxEventListener
 
 class CancelJukeboxPlayEvent(
-    plugin: JavaPlugin,
     private val keys: AddonKeys,
-    priority: ListenerPriority,
-): PacketAdapter(
-    plugin,
-    priority,
-    PacketType.Play.Server.WORLD_EVENT,
-) {
-    override fun onPacketSending(event: PacketEvent) = with(keys) {
+    private val jukeboxes: JukeboxEventListener,
+): PacketListener {
+    override fun onPacketSend(event: PacketSendEvent) = with(keys) {
+        if (event.packetType != PacketType.Play.Server.EFFECT) return
 
-        val worldEventId = event.packet.integers.read(0)
+        val packet = WrapperPlayServerEffect(event)
 
-        // https://wiki.vg/Protocol#World_Event
+        // https://minecraft.wiki/w/Java_Edition_protocol#World_Event
         // 1010: Play record
-        if (worldEventId != 1010) return
+        if (packet.event != 1010) return@with
 
-        val isCustomDisc = event.packet.blockPositionModifier
-            .read(0)
-            .toLocation(event.player.world)
-            .block
-            .asJukebox()
-            ?.record
-            ?.isCustomDisc() ?: false
+        val player = Bukkit.getPlayer(event.user.uuid) ?: return@with
+
+        val isCustomDisc = jukeboxes.isPlaying(packet.position.toBlock(player.world))
 
         if (isCustomDisc) event.isCancelled = true
     }
+
+    private fun Vector3i.toBlock(world: World) =
+        world.getBlockAt(x, y, z)
 }

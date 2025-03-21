@@ -75,7 +75,7 @@ bukkit {
     apiVersion = "1.16"
     authors = listOf("KPidS", "Apehum")
 
-    depend = listOf("PlasmoVoice", "ProtocolLib", "pv-addon-lavaplayer-lib")
+    depend = listOf("PlasmoVoice", "packetevents", "pv-addon-lavaplayer-lib")
 
     foliaSupported = true
 

@@ -1,8 +1,7 @@
 package su.plo.voice.discs
 
-import com.comphenix.protocol.ProtocolLibrary
-import com.comphenix.protocol.ProtocolManager
-import com.comphenix.protocol.events.ListenerPriority
+import com.github.retrooper.packetevents.PacketEvents
+import com.github.retrooper.packetevents.event.PacketListenerPriority
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import org.koin.dsl.koinApplication
@@ -23,10 +22,10 @@ import su.plo.voice.discs.command.subcommand.CancelCommand
 import su.plo.voice.discs.command.subcommand.EraseCommand
 import su.plo.voice.discs.command.subcommand.SearchCommand
 import su.plo.voice.discs.crafting.BurnableDiscCraft
+import su.plo.voice.discs.crafting.BurnableHornCraft
 import su.plo.voice.discs.event.ForbidGrindstoneListener
 import su.plo.voice.discs.event.JukeboxEventListener
 import su.plo.voice.discs.item.GoatHornHelper
-import su.plo.voice.discs.crafting.BurnableHornCraft
 import su.plo.voice.discs.packet.CancelJukeboxPlayEvent
 import su.plo.voice.discs.utils.KOIN_INSTANCE
 import su.plo.voice.discs.utils.extend.debug
@@ -137,10 +136,9 @@ class DiscsPlugin : JavaPlugin() {
         val permissions = voiceServer.minecraftServer.permissionManager
         permissions.registerBukkit("pv.addon.discs.play", PermissionDefault.TRUE)
 
-        val protocolManager: ProtocolManager = ProtocolLibrary.getProtocolManager()
-
-        protocolManager.addPacketListener(
-            CancelJukeboxPlayEvent(this, keys, ListenerPriority.NORMAL)
+        PacketEvents.getAPI().eventManager.registerListener(
+            CancelJukeboxPlayEvent(keys, jukeboxEventListener),
+            PacketListenerPriority.NORMAL
         )
 
         if (addonConfig.burnableTag.enableDefaultRecipe) {

@@ -35,6 +35,7 @@ import su.plo.voice.discs.AddonKeys
 import su.plo.voice.discs.PlasmoAudioPlayerManager
 import su.plo.voice.discs.utils.PluginKoinComponent
 import su.plo.voice.discs.utils.extend.*
+import java.util.concurrent.ConcurrentHashMap
 
 class JukeboxEventListener : Listener, PluginKoinComponent {
 
@@ -46,7 +47,7 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
     private val debugLogger: DebugLogger by getter()
     private val sourceLine: ServerSourceLine by getter()
 
-    private val jobByBlock: MutableMap<Block, Job> = HashMap()
+    private val jobByBlock: MutableMap<Block, Job> = ConcurrentHashMap()
 
     @EventHandler
     fun onChunkLoad(event: ChunkLoadEvent): Unit = with(keys) {
@@ -139,6 +140,9 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
             .filter { it.isJukebox() }
             .forEach { jobByBlock.remove(it)?.cancel() }
     }
+
+    fun isPlaying(block: Block): Boolean =
+        jobByBlock.containsKey(block)
 
     private fun playTrack(
         identifier: String,

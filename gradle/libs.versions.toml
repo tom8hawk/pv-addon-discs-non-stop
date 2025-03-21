@@ -12,7 +12,7 @@ paper11605 = "1.16.5-R0.1-SNAPSHOT"
 paper11904 = "1.19.4-R0.1-SNAPSHOT"
 paper12006 = "1.20.6-R0.1-SNAPSHOT"
 reflection-remapper = "0.1.1"
-protocol-lib = "4.7.0"
+packet-events = "2.7.0"
 
 crowdin = "1.1.0-SNAPSHOT"
 pv-gradle-plugin = "1.0.3-SNAPSHOT"
@@ -34,7 +34,7 @@ paper-v11605 = { module = "com.destroystokyo.paper:paper-api", version.ref = "pa
 paper-v11904 = { module = "io.papermc.paper:paper-api", version.ref = "paper11904" }
 paper-v12006 = { module = "io.papermc.paper:paper-api", version.ref = "paper12006" }
 reflectionremapper = { module = "xyz.jpenilla:reflection-remapper", version.ref = "reflection-remapper" }
-protocollib = { module = "com.comphenix.protocol:ProtocolLib", version.ref = "protocol-lib" }
+packetevents = { module = "com.github.retrooper:packetevents-spigot", version.ref = "packet-events" }
 
 [plugins]
 crowdin = { id = "su.plo.crowdin.plugin", version.ref = "crowdin" }
