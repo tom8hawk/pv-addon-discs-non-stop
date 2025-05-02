@@ -1,2 +1,3 @@
 - Fixed players ejecting and inserting a disc into a jukebox on the same tick would make the audio from the inserted disc impossible to be stopped. ([#97](https://github.com/plasmoapp/pv-addon-discs/pull/97))
 - Migrate from ProtocolLib to PacketEvents.
+- Handle disc insert in adventure mode in >=1.21.

@@ -76,7 +76,7 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
 
         if (event.action != Action.RIGHT_CLICK_BLOCK) return
 
-        if (event.player.gameMode == GameMode.ADVENTURE) return
+        if (event.player.gameMode == GameMode.ADVENTURE && Bukkit.getServer().getMinecraftVersionInt() < 12100) return
 
         val block = event.clickedBlock ?: return
 
