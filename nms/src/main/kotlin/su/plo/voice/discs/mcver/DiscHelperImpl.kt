@@ -33,7 +33,8 @@ class DiscHelperImpl : DiscHelper {
         item.setData(DataComponentTypes.TOOLTIP_DISPLAY, newTooltipDisplay)
         ^///?} else {
         val jukeboxPlayable = item.getData(DataComponentTypes.JUKEBOX_PLAYABLE) ?: return
-        jukeboxPlayable.showInTooltip(show)
+        val newJukeboxPlayable = jukeboxPlayable.showInTooltip(show)
+        item.setData(DataComponentTypes.JUKEBOX_PLAYABLE, newJukeboxPlayable)
         //?}
     }
 }
