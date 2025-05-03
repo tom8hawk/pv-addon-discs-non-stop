@@ -30,7 +30,7 @@ stonecutter {
     centralScript = "build.gradle.kts"
 
     create("nms") {
-        versions("1.19.4", "1.20.6", "1.21.3")
+        versions("1.19.4", "1.20.6", "1.21.3", "1.21.5")
         vcsVersion = "1.19.4"
     }
 }

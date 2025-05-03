@@ -5,6 +5,7 @@ import kotlinx.coroutines.launch
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
+import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemFlag
@@ -18,10 +19,12 @@ import su.plo.voice.api.server.player.VoicePlayer
 import su.plo.voice.discs.AddonConfig
 import su.plo.voice.discs.GoatHornManager
 import su.plo.voice.discs.command.SubCommand
+import su.plo.voice.discs.item.DiscHelper
 import su.plo.voice.discs.item.GoatHornHelper
 import su.plo.voice.discs.utils.extend.asPlayer
 import su.plo.voice.discs.utils.extend.asVoicePlayer
 import su.plo.voice.discs.utils.extend.forbidGrindstone
+import su.plo.voice.discs.utils.extend.getMinecraftVersionInt
 import su.plo.voice.discs.utils.extend.isCustomDisc
 import su.plo.voice.discs.utils.extend.render
 import su.plo.voice.discs.utils.extend.sendTranslatable
@@ -125,6 +128,11 @@ class BurnCommand : SubCommand() {
         }
 
         plugin.suspendSync(player.location) {
+            if (Bukkit.getServer().getMinecraftVersionInt() >= 12103) {
+                val discHelper by inject<DiscHelper>()
+                discHelper.showSongTooltip(item, false)
+            }
+
             item.editMeta { meta ->
                 meta.addItemFlags(*ItemFlag.values())
 

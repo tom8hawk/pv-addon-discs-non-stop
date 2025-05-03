@@ -1,5 +1,6 @@
 package su.plo.voice.discs.command.subcommand
 
+import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemFlag
@@ -8,10 +9,12 @@ import org.koin.core.component.inject
 import su.plo.slib.api.permission.PermissionDefault
 import su.plo.voice.discs.AddonConfig
 import su.plo.voice.discs.command.SubCommand
+import su.plo.voice.discs.item.DiscHelper
 import su.plo.voice.discs.item.GoatHornHelper
 import su.plo.voice.discs.utils.extend.allowGrindstone
 import su.plo.voice.discs.utils.extend.asPlayer
 import su.plo.voice.discs.utils.extend.asVoicePlayer
+import su.plo.voice.discs.utils.extend.getMinecraftVersionInt
 import su.plo.voice.discs.utils.extend.sendTranslatable
 
 class EraseCommand : SubCommand() {
@@ -44,6 +47,11 @@ class EraseCommand : SubCommand() {
                 voicePlayer.instance.sendTranslatable("pv.addon.discs.error.erase_wrong_item")
                 return
             }
+
+        if (Bukkit.getServer().getMinecraftVersionInt() >= 12103) {
+            val discHelper by inject<DiscHelper>()
+            discHelper.showSongTooltip(item, true)
+        }
 
         item.editMeta { meta ->
             meta.removeItemFlags(*ItemFlag.values())
