@@ -2,6 +2,9 @@ package su.plo.voice.discs
 
 import com.github.retrooper.packetevents.PacketEvents
 import com.github.retrooper.packetevents.event.PacketListenerPriority
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import org.koin.dsl.koinApplication
@@ -194,5 +197,8 @@ class DiscsPlugin : JavaPlugin() {
         }
 
         audioPlayerManager = PlasmoAudioPlayerManager()
+        CoroutineScope(Dispatchers.Default).launch {
+            audioPlayerManager.registerSources()
+        }
     }
 }

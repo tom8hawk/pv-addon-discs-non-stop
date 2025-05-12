@@ -3,6 +3,7 @@ package su.plo.voice.discs
 import kotlinx.coroutines.Job
 import org.bukkit.plugin.java.JavaPlugin
 import org.koin.core.component.inject
+import su.plo.slib.api.logging.McLoggerFactory
 import su.plo.voice.api.logging.DebugLogger
 import su.plo.voice.api.server.PlasmoVoiceServer
 import su.plo.voice.api.server.audio.provider.AudioFrameProvider
@@ -15,6 +16,7 @@ import su.plo.voice.discs.utils.extend.getter
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
+import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.source.AudioSourceManager
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.source.beam.BeamAudioSourceManager
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.source.getyarn.GetyarnAudioSourceManager
@@ -50,10 +52,6 @@ class PlasmoAudioPlayerManager : PluginKoinComponent {
 
     private val lavaPlayerManager: AudioPlayerManager = DefaultAudioPlayerManager()
     private val encryption = voiceServer.defaultEncryption
-
-    init {
-        registerSources()
-    }
 
     fun shutdown() {
         lavaPlayerManager.shutdown()
@@ -222,30 +220,30 @@ class PlasmoAudioPlayerManager : PluginKoinComponent {
         }
     }
 
-    private fun registerSources() {
+    fun registerSources() {
         val proxyHttpBuilder = proxyHttpBuilder()
         proxyHttpBuilder?.let { lavaPlayerManager.setHttpBuilderConfigurator(it) }
 
-        val youtubeClients = config.youtubeSource.clients
-            ?.mapNotNull {
-                try {
-                    // todo: config resolver don't support list of enums for some reason
-                    YoutubeClient.valueOf(it)
-                } catch (e: IllegalArgumentException) {
-                    null
+        lavaPlayerManager.registerSourceManagerCatching("youtube") {
+            val youtubeClients = config.youtubeSource.clients
+                ?.mapNotNull {
+                    try {
+                        // todo: config resolver don't support list of enums for some reason
+                        YoutubeClient.valueOf(it)
+                    } catch (e: IllegalArgumentException) {
+                        null
+                    }
                 }
-            }
-            ?.takeIf { it.isNotEmpty() }
-            ?: listOf(
-                YoutubeClient.MUSIC,
-                YoutubeClient.ANDROID_VR,
-                YoutubeClient.WEB,
-                YoutubeClient.WEBEMBEDDED,
-                YoutubeClient.TVHTML5EMBEDDED,
-            )
-        plugin.slF4JLogger.info("YouTube clients: {}", youtubeClients)
+                ?.takeIf { it.isNotEmpty() }
+                ?: listOf(
+                    YoutubeClient.MUSIC,
+                    YoutubeClient.ANDROID_VR,
+                    YoutubeClient.WEB,
+                    YoutubeClient.WEBEMBEDDED,
+                    YoutubeClient.TVHTML5EMBEDDED,
+                )
+            plugin.slF4JLogger.info("YouTube clients: {}", youtubeClients)
 
-        lavaPlayerManager.registerSourceManager(
             YoutubeAudioSourceManager(true, *youtubeClients.map { it.client.get() }.toTypedArray())
                 .also { source ->
                     proxyHttpBuilder?.let { source.httpInterfaceManager.configureBuilder(it) }
@@ -262,14 +260,26 @@ class PlasmoAudioPlayerManager : PluginKoinComponent {
                         if (refreshToken == null) listenForTokenChange(source)
                     }
                 }
-        )
-        lavaPlayerManager.registerSourceManager(SoundCloudAudioSourceManager.createDefault())
-        lavaPlayerManager.registerSourceManager(BandcampAudioSourceManager())
-        lavaPlayerManager.registerSourceManager(VimeoAudioSourceManager())
-        lavaPlayerManager.registerSourceManager(TwitchStreamAudioSourceManager())
-        lavaPlayerManager.registerSourceManager(BeamAudioSourceManager())
-        lavaPlayerManager.registerSourceManager(GetyarnAudioSourceManager())
-        lavaPlayerManager.registerSourceManager(CustomHttpAudioSourceManager())
+        }
+
+        lavaPlayerManager.registerSourceManagerCatching("soundcloud") { SoundCloudAudioSourceManager.createDefault() }
+        lavaPlayerManager.registerSourceManagerCatching("bandcamp") { BandcampAudioSourceManager() }
+        lavaPlayerManager.registerSourceManagerCatching("vimeo") { VimeoAudioSourceManager() }
+        lavaPlayerManager.registerSourceManagerCatching("twitch") { TwitchStreamAudioSourceManager() }
+        lavaPlayerManager.registerSourceManagerCatching("beam.pro") { BeamAudioSourceManager() }
+        lavaPlayerManager.registerSourceManagerCatching("getyarn.io") { GetyarnAudioSourceManager() }
+        lavaPlayerManager.registerSourceManagerCatching("http") { CustomHttpAudioSourceManager() }
+    }
+
+    private fun AudioPlayerManager.registerSourceManagerCatching(
+        sourceName: String,
+        sourceManager: () -> AudioSourceManager,
+    ) {
+        try {
+            registerSourceManager(sourceManager.invoke())
+        } catch (e: Throwable) {
+            logger.error("Failed to register $sourceName source", e)
+        }
     }
 
     inner class CustomHttpAudioSourceManager : HttpAudioSourceManager() {
@@ -290,5 +300,9 @@ class PlasmoAudioPlayerManager : PluginKoinComponent {
             }
             return super.loadItem(manager, reference)
         }
+    }
+
+    companion object {
+        private val logger = McLoggerFactory.createLogger("PlasmoAudioPlayerManager")
     }
 }
