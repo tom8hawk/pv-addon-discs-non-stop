@@ -18,6 +18,9 @@ object ReflectionProxies {
     //? if >=1.21.3
     /*val component: ComponentProxy*/
 
+    //? if >=1.21.5
+    /*val instrumentComponent: InstrumentComponentProxy*/
+
     init {
         val remapper = ReflectionRemapper.forReobfMappingsInPaperJar()
         val proxyFactory = ReflectionProxyFactory.create(remapper, javaClass.classLoader)
@@ -34,5 +37,8 @@ object ReflectionProxies {
 
         //? if >=1.21.3
         /*component = proxyFactory.reflectionProxy(ComponentProxy::class.java)*/
+
+        //? if >=1.21.5
+        /*instrumentComponent = proxyFactory.reflectionProxy(InstrumentComponentProxy::class.java)*/
     }
 }

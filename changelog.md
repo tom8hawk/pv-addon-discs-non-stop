@@ -3,3 +3,4 @@
 - Handle disc insert in adventure mode in >=1.21.
 - Vanilla song name on burned discs in now hidden in >=1.21.3.
 - Fixed missing label in actionbar when playing a track. ([#101](https://github.com/plasmoapp/pv-addon-discs/issues/101))
+- Fixed data corruption when trying to burn goat horn in 1.21.5. ([#104](https://github.com/plasmoapp/pv-addon-discs/issues/104))

@@ -11,19 +11,32 @@ import su.plo.voice.discs.utils.ReflectionUtil
 
 class GoatHornHelperImpl : GoatHornHelper {
 
-    //? if >=1.20.6 {
+    //? if >=1.21.5 {
+    /*private val emptyInstrument by lazy {
+        ReflectionProxies.instrumentComponent.newInstance(
+            ReflectionProxies.holder.direct(
+                ReflectionProxies.instrument.newInstance(
+                    ReflectionProxies.holder.direct(ReflectionProxies.soundEvents.empty()),
+                    140.0f,
+                    256f,
+                    ReflectionProxies.component.empty()
+                )
+            )
+        )
+    }
+    *///?} else if >=1.20.6 {
     /*private val emptyInstrument by lazy {
         ReflectionProxies.holder.direct(
             ReflectionProxies.instrument.newInstance(
                 ReflectionProxies.holder.direct(ReflectionProxies.soundEvents.empty()),
                 //? if >=1.21.3 {
-                /^140.0f,
-                ^///?} else {
-                140,
-                //?}
+                140.0f,
+                //?} else {
+                /^140,
+                ^///?}
                 256f,
                 //? if >=1.21.3
-                /^ReflectionProxies.component.empty()^/
+                ReflectionProxies.component.empty()
             )
         )
     }
