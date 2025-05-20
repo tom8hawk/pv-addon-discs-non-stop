@@ -25,6 +25,7 @@ import su.plo.voice.discs.utils.extend.asPlayer
 import su.plo.voice.discs.utils.extend.asVoicePlayer
 import su.plo.voice.discs.utils.extend.forbidGrindstone
 import su.plo.voice.discs.utils.extend.getMinecraftVersionInt
+import su.plo.voice.discs.utils.extend.hasIdentifier
 import su.plo.voice.discs.utils.extend.isCustomDisc
 import su.plo.voice.discs.utils.extend.render
 import su.plo.voice.discs.utils.extend.sendTranslatable
@@ -133,6 +134,8 @@ class BurnCommand : SubCommand() {
                 discHelper.showSongTooltip(item, false)
             }
 
+            val hasIdentifier = with(keys) { item.hasIdentifier() }
+
             item.editMeta { meta ->
                 meta.addItemFlags(*ItemFlag.values())
 
@@ -147,7 +150,7 @@ class BurnCommand : SubCommand() {
                     meta.addEnchant(Enchantment.MENDING, 1, false)
                 }
 
-                if (isGoatHorn) {
+                if (isGoatHorn && !hasIdentifier) {
                     hornHelper.getInstrument(item)
                         .takeIf { it.isNotEmpty() }
                         ?.let {
@@ -185,7 +188,7 @@ class BurnCommand : SubCommand() {
                 }
             }
 
-            if (isGoatHorn) {
+            if (isGoatHorn && !hasIdentifier) {
                 hornHelper.setEmptyInstrument(item)
             }
 
