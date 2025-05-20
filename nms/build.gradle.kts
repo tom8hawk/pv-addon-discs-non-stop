@@ -4,20 +4,20 @@ plugins {
     id("com.gradleup.shadow")
 }
 
-val isActiveProject = stonecutter.active == stonecutter.current
-if (isActiveProject) {
-    apply(plugin = "io.papermc.paperweight.userdev")
-}
+//val isActiveProject = stonecutter.active == stonecutter.current
+//if (isActiveProject) {
+//    apply(plugin = "io.papermc.paperweight.userdev")
+//}
 
 dependencies {
     compileOnly(project(":core"))
 
     val paperApi = property("deps.paper_api") as String
 
-    if (isActiveProject) {
-        extensions.getByType(PaperweightUserDependenciesExtension::class.java)
-            .paperDevBundle(paperApi.substringAfterLast(':'))
-    }
+//    if (isActiveProject) {
+//        extensions.getByType(PaperweightUserDependenciesExtension::class.java)
+//            .paperDevBundle(paperApi.substringAfterLast(':'))
+//    }
 
     compileOnly(paperApi)
 }
