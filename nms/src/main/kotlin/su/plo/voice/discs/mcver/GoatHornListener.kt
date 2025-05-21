@@ -25,6 +25,8 @@ class GoatHornListener : Listener, PluginKoinComponent {
     fun onHornInteract(event: PlayerInteractEvent) = with(keys) {
         if (!config.goatHorn.enabled) return
 
+        if (!event.action.isRightClick) return
+
         val item = event.item ?: return
         val player = event.player
 
