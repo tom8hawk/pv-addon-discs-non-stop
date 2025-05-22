@@ -20,7 +20,7 @@ The addon can stream audio from various sources instead of saving audio files on
 
 ## Installation
 
-1. Install [Plasmo Voice](https://modrinth.com/mod/plasmo-voice), [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/) and [pv-addon-lavaplayer-lib](https://modrinth.com/mod/pv-addon-lavaplayer-lib). You also need to install Plasmo Voice on your client.
+1. Install [Plasmo Voice](https://modrinth.com/mod/plasmo-voice), [PacketEvents](https://modrinth.com/plugin/packetevents) and [pv-addon-lavaplayer-lib](https://modrinth.com/mod/pv-addon-lavaplayer-lib). You also need to install Plasmo Voice on your client.
 2. Download this plugin from Modrinth and drop it into the `~/plugins` folder.
 3. Restart the server
 
