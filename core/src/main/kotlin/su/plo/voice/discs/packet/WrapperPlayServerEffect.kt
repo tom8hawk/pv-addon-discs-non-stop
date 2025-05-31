@@ -3,11 +3,10 @@ package su.plo.voice.discs.packet
 import com.github.retrooper.packetevents.event.PacketSendEvent
 import com.github.retrooper.packetevents.util.Vector3i
 import com.github.retrooper.packetevents.wrapper.PacketWrapper
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSoundEffect
 
 class WrapperPlayServerEffect(
     event: PacketSendEvent
-) : PacketWrapper<WrapperPlayServerSoundEffect>(event) {
+) : PacketWrapper<WrapperPlayServerEffect>(event) {
     var event: Int = 0
         private set
     lateinit var position: Vector3i
