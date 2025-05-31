@@ -1,0 +1,1 @@
+- Fixed an issue where a vanilla disc would start playing after a custom disc ended.
