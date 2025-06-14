@@ -184,6 +184,7 @@ class DiscsPlugin : JavaPlugin() {
         debugLogger = DebugLogger(McLoggerFactory.createLogger(slF4JLogger.name))
         debugLogger.enabled(voiceServer.debug())
 
+        voiceServer.sourceLineManager.unregister(addonName)
         sourceLine = voiceServer.sourceLineManager.createBuilder(
             this,
             addonName,
