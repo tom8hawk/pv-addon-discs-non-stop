@@ -56,7 +56,7 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
                 val jukebox = it as? Jukebox ?: return@forEach
                 if (!it.record.isCustomDisc()) return@forEach
 
-                jukebox.stopPlayingWithUpdate()
+                jukebox.stopPlaying()
             }
     }
 
