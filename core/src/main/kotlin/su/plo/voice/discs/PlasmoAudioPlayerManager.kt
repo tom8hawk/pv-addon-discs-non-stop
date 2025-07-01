@@ -21,6 +21,7 @@ import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.source.band
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.source.beam.BeamAudioSourceManager
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.source.getyarn.GetyarnAudioSourceManager
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager
+import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager
 import su.plo.voice.lavaplayer.libs.com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager
@@ -39,6 +40,7 @@ import su.plo.voice.lavaplayer.libs.org.apache.http.impl.client.BasicCredentials
 import su.plo.voice.lavaplayer.libs.org.apache.http.impl.client.HttpClientBuilder
 import java.io.File
 import java.net.URI
+import java.nio.file.Path
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 import kotlin.concurrent.fixedRateTimer
@@ -269,6 +271,13 @@ class PlasmoAudioPlayerManager : PluginKoinComponent {
         lavaPlayerManager.registerSourceManagerCatching("beam.pro") { BeamAudioSourceManager() }
         lavaPlayerManager.registerSourceManagerCatching("getyarn.io") { GetyarnAudioSourceManager() }
         lavaPlayerManager.registerSourceManagerCatching("http") { CustomHttpAudioSourceManager() }
+
+        if (config.localSource.enabled) {
+            val rootPath = config.localSource.path.takeIf { it.isNotEmpty() }
+                ?.let { Path.of(it) }
+                ?: plugin.dataFolder.toPath().resolve("local").also { it.toFile().mkdirs() }
+            lavaPlayerManager.registerSourceManagerCatching("local") { CustomLocalAudioSourceManager(rootPath) }
+        }
     }
 
     private fun AudioPlayerManager.registerSourceManagerCatching(
@@ -279,6 +288,27 @@ class PlasmoAudioPlayerManager : PluginKoinComponent {
             registerSourceManager(sourceManager.invoke())
         } catch (e: Throwable) {
             logger.error("Failed to register $sourceName source", e)
+        }
+    }
+
+    inner class CustomLocalAudioSourceManager(
+        private val rootPath: Path,
+    ) : LocalAudioSourceManager() {
+        override fun loadItem(manager: AudioPlayerManager, reference: AudioReference): AudioItem? {
+            val identifier = reference.identifier
+            if (!identifier.startsWith("file://") && !identifier.startsWith("local://"))
+                return null
+
+            val path = rootPath.resolve(identifier.removePrefix("file://").removePrefix("local://"))
+            if (!path.startsWith(rootPath)) return null
+
+            val file = path.toFile()
+                .takeIf { it.exists() && it.isFile() && it.canRead() }
+                ?: return null
+
+            val newReference = AudioReference(file.toString(), reference.title, reference.containerDescriptor)
+
+            return super.loadItem(manager, newReference)
         }
     }
 

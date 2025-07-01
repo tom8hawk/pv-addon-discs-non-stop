@@ -223,6 +223,29 @@ class AddonConfig {
     @ConfigField
     val youtubeSource = YouTubeSourceConfig()
 
+    @ConfigField
+    val localSource = LocalSourceConfig()
+
+    @Config
+    class LocalSourceConfig {
+        @ConfigField(
+            comment = """
+                Enable local source. Local source allows to load audio files from specified "path" folder.
+                
+                Example format:
+                file://test.mp3
+                local://test.mp3
+            """
+        )
+        val enabled = false
+
+        @ConfigField(comment = """
+            Path used as a root to resolve audio files.
+            If path is empty, "local" folder inside addon's plugin folder will be used ("plugins/pv-addon-discs/local").
+        """)
+        val path = ""
+    }
+
     @Config
     class BurnableTag {
         @ConfigField(
