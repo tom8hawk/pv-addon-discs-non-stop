@@ -5,7 +5,7 @@ kotlinx = "1.7.3"
 koin-bom = "3.5.6"
 
 pv = "2.1.3-SNAPSHOT"
-pv-lavaplayer = "1.1.1-SNAPSHOT"
+pv-lavaplayer = "7d418c383e"
 slib = "1.0.0-SNAPSHOT"
 
 paper11605 = "1.16.5-R0.1-SNAPSHOT"
@@ -27,7 +27,7 @@ koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
 koin-core = { module = "io.insert-koin:koin-core" }
 
 pv = { module = "su.plo.voice.server:paper", version.ref = "pv" }
-pv-lavaplayer = { module = "su.plo:pv-addon-lavaplayer-lib", version.ref = "pv-lavaplayer" }
+pv-lavaplayer = { module = "com.github.JirayuSrisawat-Github:pv-addon-lavaplayer-lib", version.ref = "pv-lavaplayer" }
 slib = { module = "su.plo.slib:spigot", version.ref = "slib" }
 
 paper-v11605 = { module = "com.destroystokyo.paper:paper-api", version.ref = "paper11605" }
