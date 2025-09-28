@@ -53,7 +53,6 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
 
     @EventHandler
     fun onChunkLoad(event: ChunkLoadEvent): Unit = with(keys) {
-        println("load")
         val chunk = event.chunk
         val tiles = chunk.getTileEntities({ it.isJukebox() }, true)
 
@@ -81,7 +80,6 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
         jobByBlock.keys
             .filter { it.inChunk(chunk) }
             .forEach {
-                println("unload")
                 jobByBlock.remove(it)?.cancel()
             }
     }
@@ -272,9 +270,6 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
 
                 closeResources(job, source)
                 if (!plugin.isEnabled) return@withContext
-                if (!isSafeDiscChange(block, this@launch)) {
-                    println("load chunk again")
-                }
 
                 plugin.suspendSync(block.location) {
                     if (isSafeDiscChange(block, this@launch)) {
