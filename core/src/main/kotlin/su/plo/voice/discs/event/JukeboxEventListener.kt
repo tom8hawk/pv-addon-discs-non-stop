@@ -258,7 +258,7 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
             plugin.suspendSync(block.location) {
                 if (isSafeDiscChange(block, this@launch)) {
                     debugLogger.log("Track ended. Restarting track \"$trackName\"")
-                    val loopJob = playTrack(identifier, block, itemMeta, voicePlayer)
+                    val loopJob = playTrack(identifier, block, itemMeta)
                     jobByBlock[block] = loopJob
                 }
             }
