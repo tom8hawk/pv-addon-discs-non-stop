@@ -29,14 +29,12 @@ import su.plo.slib.api.server.position.ServerPos3d
 import su.plo.voice.api.logging.DebugLogger
 import su.plo.voice.api.server.PlasmoVoiceServer
 import su.plo.voice.api.server.audio.line.ServerSourceLine
-import su.plo.voice.api.server.audio.source.ServerAudioSource
 import su.plo.voice.api.server.player.VoicePlayer
 import su.plo.voice.discs.AddonConfig
 import su.plo.voice.discs.AddonKeys
 import su.plo.voice.discs.PlasmoAudioPlayerManager
 import su.plo.voice.discs.utils.PluginKoinComponent
 import su.plo.voice.discs.utils.extend.*
-import su.plo.voice.proto.data.audio.source.SourceInfo
 import java.util.concurrent.ConcurrentHashMap
 
 class JukeboxEventListener : Listener, PluginKoinComponent {
@@ -257,7 +255,6 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
                 lastTick = System.currentTimeMillis()
             }
 
-            closeResources(job, source)
             if (!plugin.isEnabled) return@launch
 
             plugin.suspendSync(block.location) {
@@ -270,7 +267,9 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
             withContext(NonCancellable) {
                 debugLogger.log("Track \"${source.sourceInfo.name}\" on $source was ended or cancelled")
 
-                closeResources(job, source)
+                job.cancelAndJoin()
+                source.remove()
+
                 if (!plugin.isEnabled) return@withContext
                 if (!isSafeDiscChange(block, this@launch)) {
                     println("load chunk again")
@@ -287,11 +286,6 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
                 }
             }
         }
-    }
-
-    private suspend fun <S : SourceInfo?> closeResources(job: Job, source: ServerAudioSource<S>) {
-        job.cancelAndJoin()
-        source.remove()
     }
 
     private fun isSafeDiscChange(block: Block, job: CoroutineScope) : Boolean {
