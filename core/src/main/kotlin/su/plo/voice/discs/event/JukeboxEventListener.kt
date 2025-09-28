@@ -270,7 +270,7 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
                 source.remove()
 
                 if (!plugin.isEnabled) return@withContext
-                if (!jobByBlock.containsValue(this@launch)) {
+                if (!isSafeDiscChange(block, this@launch)) {
                     println("load chunk again")
                 }
 
