@@ -51,6 +51,7 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
 
     @EventHandler
     fun onChunkLoad(event: ChunkLoadEvent): Unit = with(keys) {
+        println("load")
         val chunk = event.chunk
         val tiles = chunk.getTileEntities({ it.isJukebox() }, true)
 
