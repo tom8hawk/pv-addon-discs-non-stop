@@ -258,8 +258,7 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
             plugin.suspendSync(block.location) {
                 if (isSafeDiscChange(block, this@launch)) {
                     debugLogger.log("Track ended. Restarting track \"$trackName\"")
-                    val loopJob = playTrack(identifier, block, itemMeta)
-                    jobByBlock[block] = loopJob
+                    jobByBlock[block] = playTrack(identifier, block, itemMeta)
                 }
             }
         } finally {
@@ -273,15 +272,11 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
 
                 plugin.suspendSync(block.location) {
                     if (isSafeDiscChange(block, this@launch)) {
+                        jobByBlock.remove(block)
+
                         val jukebox = block.asJukebox() ?: return@suspendSync
                         jukebox.stopPlaying()
                         jukebox.update()
-                    }
-                }
-
-                plugin.suspendSync(block.location) {
-                    if (isSafeDiscChange(block, this@launch)) {
-                        jobByBlock.remove(block)
                     }
                 }
             }
