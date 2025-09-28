@@ -78,6 +78,7 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
         jobByBlock.keys
             .filter { it.inChunk(chunk) }
             .forEach {
+                println("unload")
                 jobByBlock.remove(it)?.cancel()
             }
     }
@@ -269,6 +270,9 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
                 source.remove()
 
                 if (!plugin.isEnabled) return@withContext
+                if (!jobByBlock.containsValue(this@launch)) {
+                    println("load chunk again")
+                }
 
                 plugin.suspendSync(block.location) {
                     if (isSafeDiscChange(block, this@launch)) {
