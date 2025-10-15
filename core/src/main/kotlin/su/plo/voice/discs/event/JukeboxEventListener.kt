@@ -29,6 +29,7 @@ import su.plo.slib.api.server.position.ServerPos3d
 import su.plo.voice.api.logging.DebugLogger
 import su.plo.voice.api.server.PlasmoVoiceServer
 import su.plo.voice.api.server.audio.line.ServerSourceLine
+import su.plo.voice.api.server.audio.source.ServerAudioSource
 import su.plo.voice.api.server.player.VoicePlayer
 import su.plo.voice.discs.AddonConfig
 import su.plo.voice.discs.AddonKeys
@@ -36,6 +37,7 @@ import su.plo.voice.discs.PlasmoAudioPlayerManager
 import su.plo.voice.discs.item.DiscHelper
 import su.plo.voice.discs.utils.PluginKoinComponent
 import su.plo.voice.discs.utils.extend.*
+import su.plo.voice.proto.data.audio.source.SourceInfo
 import java.util.concurrent.ConcurrentHashMap
 
 class JukeboxEventListener : Listener, PluginKoinComponent {
@@ -61,7 +63,7 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
         for (tile in tiles) {
             val jukebox = tile as? Jukebox ?: continue
             val record = jukebox.record
-            val identifier = record.customDiscIdentifier() ?: continue
+            val identifier = record.customDiscIdentifier(discHelper) ?: continue
 
             val block = jukebox.block
             if (jobByBlock[block] != null) continue
