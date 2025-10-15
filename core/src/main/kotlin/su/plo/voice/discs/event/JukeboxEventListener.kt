@@ -53,13 +53,24 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
 
     @EventHandler
     fun onChunkLoad(event: ChunkLoadEvent): Unit = with(keys) {
-        event.chunk.getTileEntities({ it.isJukebox() }, true)
-            .forEach {
-                val jukebox = it as? Jukebox ?: return@forEach
-                if (!it.record.isCustomDisc(discHelper)) return@forEach
+        val chunk = event.chunk
+        val tiles = chunk.getTileEntities({ it.isJukebox() }, true)
 
-                jukebox.stopPlaying()
-            }
+        if (tiles.isEmpty()) return
+
+        for (tile in tiles) {
+            val jukebox = tile as? Jukebox ?: continue
+            val record = jukebox.record
+            val identifier = record.customDiscIdentifier() ?: continue
+
+            val block = jukebox.block
+            if (jobByBlock[block] != null) continue
+
+            jukebox.setRecord(record)
+            jukebox.update()
+
+            jobByBlock[jukebox.block] = playTrack(identifier, jukebox.block, record.itemMeta)
+        }
     }
 
     @EventHandler
@@ -167,7 +178,6 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
 
             debugLogger.log("Failed to load track", e)
 
-            plugin.suspendSync(block.location) { block.asJukebox()?.eject() }
             return@launch
         }
 
@@ -243,29 +253,45 @@ class JukeboxEventListener : Listener, PluginKoinComponent {
                     jukebox.update()
                 }
                 lastTick = System.currentTimeMillis()
+            }
 
+            closeResources(job, source)
+            if (!plugin.isEnabled) return@launch
+
+            plugin.suspendSync(block.location) {
+                if (isSafeDiscChange(block, this@launch)) {
+                    debugLogger.log("Track ended. Restarting track \"$trackName\"")
+                    jobByBlock[block] = playTrack(identifier, block, itemMeta)
+                }
             }
         } finally {
             withContext(NonCancellable) {
                 debugLogger.log("Track \"${source.sourceInfo.name}\" on $source was ended or cancelled")
 
-                job.cancelAndJoin()
-                source.remove()
+                closeResources(job, source)
+                if (!plugin.isEnabled) return@withContext
 
                 plugin.suspendSync(block.location) {
-                    val jukebox = block.asJukebox() ?: return@suspendSync
-                    val currentJob = jobByBlock[block] ?: return@suspendSync
-                    if (currentJob != this@launch) return@suspendSync
-                    jukebox.stopPlayingWithUpdate()
-                }
+                    if (isSafeDiscChange(block, this@launch)) {
+                        jobByBlock.remove(block)
 
-                plugin.suspendSync(block.location) {
-                    val currentJob = jobByBlock[block] ?: return@suspendSync
-                    if (currentJob != this@launch) return@suspendSync
-                    jobByBlock.remove(block)
+                        val jukebox = block.asJukebox() ?: return@suspendSync
+                        jukebox.stopPlaying()
+                        jukebox.update()
+                    }
                 }
             }
         }
+    }
+
+    private suspend fun <S : SourceInfo?> closeResources(job: Job, source: ServerAudioSource<S>) {
+        job.cancelAndJoin()
+        source.remove()
+    }
+
+    private fun isSafeDiscChange(block: Block, job: CoroutineScope) : Boolean {
+        val currentJob = jobByBlock[block] ?: return false
+        return currentJob == job
     }
 
     private fun getBeaconLevel(block: Block) =
